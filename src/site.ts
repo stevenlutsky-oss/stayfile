@@ -954,6 +954,30 @@ export const PAGES: ToolPage[] = [
     ],
   },
   {
+    slug: 'svg-to-webp',
+    tool: 'img-convert',
+    group: 'Images',
+    card: 'SVG to WebP',
+    blurb: 'Turn vector files into WebP images',
+    preset: { out: 'image/webp', accept: 'image/svg+xml,.svg' },
+    title: 'SVG to WebP converter that works in your browser',
+    h1: 'Convert SVG to WebP',
+    lede: 'Turn SVG files into WebP images, with transparency kept. The WebP is made at the SVG\'s own size and is usually smaller than a PNG of the same picture.',
+    description: 'Convert SVG vector files to WebP in your browser. Transparency is kept and the WebP is made at the SVG\'s own size. Your file is never uploaded.',
+    steps: ['Drop in your .svg files.', 'WebP is already selected. Move the quality slider if you want smaller files.', 'Click Convert and save.'],
+    faq: [
+      {
+        q: 'What size is the WebP?',
+        a: 'The size from the SVG\'s width and height, or its viewBox when it has none. An SVG with no size at all is drawn at 1024 by 768. Use the Resize page if you need a different size.',
+      },
+      {
+        q: 'Why does the SVG look different here than in my editor?',
+        a: 'The page draws the SVG the way a browser draws it. SVGs that rely on fonts installed on your computer, or on outside images, may show fallback text or miss pieces.',
+      },
+      PRIVATE,
+    ],
+  },
+  {
     slug: 'png-to-ico',
     tool: 'img-ico',
     group: 'Images',
@@ -1212,6 +1236,30 @@ export const PAGES: ToolPage[] = [
       {
         q: 'Is the JPG smaller than the GIF?',
         a: 'For photos, usually. For flat graphics with few colors the GIF can come out smaller, so check the result before you replace the original.',
+      },
+      PRIVATE,
+    ],
+  },
+  {
+    slug: 'gif-to-ico',
+    tool: 'img-ico',
+    group: 'Images',
+    card: 'GIF to ICO',
+    blurb: 'Make a .ico favicon file from a GIF',
+    preset: { accept: 'image/gif,.gif' },
+    title: 'GIF to ICO converter: make a .ico favicon from a GIF',
+    h1: 'Convert GIF to ICO',
+    lede: 'Turn a GIF into a .ico file, the format browsers use for favicons. The first frame of an animated GIF is kept, and the file holds 16, 32 and 48 px versions of the image.',
+    description: 'Convert a GIF to a .ico favicon file in your browser. Only the first frame of an animated GIF is used. Transparency is kept. Your file is never uploaded.',
+    steps: ['Drop in your GIF files.', 'Nothing to set. The three sizes are made from your image.', 'Click Save to download the .ico file, or all of them as a zip.'],
+    faq: [
+      {
+        q: 'What happens to the animation?',
+        a: 'It is dropped. A favicon is one still picture, so the .ico holds the first frame of the GIF. To keep the animation, use the GIF file itself.',
+      },
+      {
+        q: 'What sizes end up in the file?',
+        a: '16 by 16, 32 by 32 and 48 by 48 pixels. If the GIF is not square, the image is centered on a transparent square instead of being stretched.',
       },
       PRIVATE,
     ],

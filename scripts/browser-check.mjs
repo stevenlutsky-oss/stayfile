@@ -172,6 +172,8 @@ const checks = [
   { slug: '/webp-to-avif/', fixtures: [F('sample.webp')], click: 'Save', expect: '' },
   { slug: '/avif-to-webp/', fixtures: [F('sample.avif')], click: 'Save', expect: '' },
   { slug: '/gif-to-webp/', fixtures: [F('sample.gif')], click: 'Save', expect: '' },
+  { slug: '/svg-to-webp/', name: 'svg-to-webp (load only, no SVG fixture)' },
+  { slug: '/gif-to-ico/', fixtures: [F('sample.gif')], click: 'Save', expect: '' },
   { slug: '/ico-to-jpg/', fixtures: [F('sample.ico')], click: 'Save', expect: '' },
   { slug: '/compress-jpg/', fixtures: [F('sample.jpg')], click: 'Save', expect: '' },
   { slug: '/avif-to-pdf/', fixtures: [F('sample.avif')], click: 'Make PDF', expect: 'Made' },

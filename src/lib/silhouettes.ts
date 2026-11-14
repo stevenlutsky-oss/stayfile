@@ -112,6 +112,7 @@ export const shapes: Record<string, Shape[]> = {
   'avif-to-webp': merge(P(18, 18, 72, 56), tag(86, 62)),
   'svg-to-png': merge(P(14, 16, 74, 58), { fill: [], cut: [], ink: ['M20 58C40 22 62 22 82 58'], dots: [{ cx: 20, cy: 58, r: 3.2 }, { cx: 51, cy: 27, r: 3.2 }, { cx: 82, cy: 58, r: 3.2 }] }),
   'svg-to-jpg': merge(P(14, 16, 74, 58), { fill: [], cut: [], ink: ['M20 58C40 22 62 22 82 58'], dots: [{ cx: 20, cy: 58, r: 3.2 }, { cx: 51, cy: 27, r: 3.2 }, { cx: 82, cy: 58, r: 3.2 }] }),
+  'svg-to-webp': merge(P(14, 16, 74, 58), { fill: [], cut: [], ink: ['M20 58C40 22 62 22 82 58'], dots: [{ cx: 20, cy: 58, r: 3.2 }, { cx: 51, cy: 27, r: 3.2 }, { cx: 82, cy: 58, r: 3.2 }] }),
   'heic-to-png': merge(
     { fill: ['M38 6h44a8 8 0 0 1 8 8v68a8 8 0 0 1 -8 8h-44a8 8 0 0 1 -8 -8v-68a8 8 0 0 1 8 -8z'], cut: ['M52 12h16', 'M36 20h48v54h-48z'] },
     { fill: [], cut: [hills(36, 20, 48, 54)], dots: [sun(36, 20, 48, 54)] },
@@ -121,6 +122,7 @@ export const shapes: Record<string, Shape[]> = {
   'jpg-to-ico': merge(P(14, 18, 60, 50), tag(80, 58)),
   'webp-to-ico': merge(P(14, 18, 60, 50), tag(80, 58)),
   'svg-to-ico': merge(P(14, 18, 60, 50), tag(80, 58)),
+  'gif-to-ico': merge(P(14, 18, 60, 50), tag(80, 58)),
   'ico-to-jpg': merge(P(14, 18, 60, 50), tag(80, 58)),
   'ico-to-webp': merge(P(14, 18, 60, 50), tag(80, 58)),
   'bmp-to-jpg': merge(P(18, 18, 72, 56), tag(86, 62)),
