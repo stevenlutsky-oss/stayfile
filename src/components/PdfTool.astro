@@ -17,7 +17,7 @@ const runs = tool === 'pdf-rotate'
   : tool === 'pdf-split'
     ? splitButtons(split)
     : [];
-const action = { 'pdf-merge': 'Merge PDFs', 'pdf-split': split === 'extract' ? 'Extract pages' : split === 'remove' ? 'Remove pages' : 'Split PDF', 'pdf-rotate': 'Rotate and save', 'img-to-pdf': 'Make PDF', 'pdf-to-jpg': 'Convert to JPG', 'pdf-to-png': 'Convert to PNG', 'pdf-to-text': 'Extract text', 'text-to-pdf': 'Make PDF' }[tool as string];
+const action = { 'pdf-merge': 'Merge PDFs', 'pdf-split': split === 'extract' ? 'Extract pages' : split === 'remove' ? 'Remove pages' : 'Split PDF', 'pdf-rotate': 'Rotate and save', 'pdf-numbers': 'Add page numbers', 'img-to-pdf': 'Make PDF', 'pdf-to-jpg': 'Convert to JPG', 'pdf-to-png': 'Convert to PNG', 'pdf-to-text': 'Extract text', 'text-to-pdf': 'Make PDF' }[tool as string];
 ---
 <section class="tool" data-tool={tool} data-split={split} data-slug={slug}>
   <ul class="files" id="list"></ul>
@@ -37,6 +37,25 @@ const action = { 'pdf-merge': 'Merge PDFs', 'pdf-split': split === 'extract' ? '
       <div class="opts">
         <label>Pages <input id="ranges" placeholder="All pages" autocomplete="off" /></label>
         <p class="hint">Leave pages empty to turn every page, or type some, like 2, 4-6.</p>
+      </div>
+    )}
+    {tool === 'pdf-numbers' && (
+      <div class="opts">
+        <label>Position
+          <select id="numPos">
+            <option value="bottom" selected>Bottom centre</option>
+            <option value="top">Top centre</option>
+          </select>
+        </label>
+        <label>Format
+          <select id="numFmt">
+            <option value="of" selected>Page 3 of 12</option>
+            <option value="count">3 of 12</option>
+            <option value="plain">3</option>
+          </select>
+        </label>
+        <label>Start at <input id="numStart" type="number" min="1" step="1" value="1" inputmode="numeric" /></label>
+        <p class="hint">Every page gets a number. The "of" part counts to the last page in this file.</p>
       </div>
     )}
     {(tool === 'pdf-to-jpg' || tool === 'pdf-to-png') && (
@@ -285,7 +304,7 @@ const action = { 'pdf-merge': 'Merge PDFs', 'pdf-split': split === 'extract' ? '
       const name = baseName(first.file.name);
       const pdf = 'application/pdf';
       let done = '';
-      const { parseRanges, pagesToKeep, merge, extract, split, burst, rotate, imagesToPdf, pageImageName, textToPdf } = await pdfLib();
+      const { parseRanges, pagesToKeep, merge, extract, split, burst, rotate, imagesToPdf, pageImageName, textToPdf, addPageNumbers } = await pdfLib();
       if (tool === 'pdf-merge') {
         const out = await merge(await Promise.all(items.map((i) => i.file.arrayBuffer())));
         put(out, mergedName(first.file.name), pdf);
@@ -295,6 +314,12 @@ const action = { 'pdf-merge': 'Merge PDFs', 'pdf-split': split === 'extract' ? '
         const sel = ranges!.value.trim() ? parseRanges(ranges!.value, first.pages!).flat() : undefined;
         put(await rotate(await first.file.arrayBuffer(), by, sel), `${name}-rotated.pdf`, pdf);
         done = `Rotated ${sel ? sel.length : first.pages} page${(sel ? sel.length : first.pages) === 1 ? '' : 's'}.`;
+      } else if (tool === 'pdf-numbers') {
+        const position = ($<HTMLSelectElement>('numPos')!.value) as 'bottom' | 'top';
+        const format = ($<HTMLSelectElement>('numFmt')!.value) as 'plain' | 'count' | 'of';
+        const start = Math.max(1, Math.floor(+($<HTMLInputElement>('numStart')!.value || 1)) || 1);
+        put(await addPageNumbers(await first.file.arrayBuffer(), { position, format, start }), `${name}-numbered.pdf`, pdf);
+        done = `Added page numbers to ${first.pages ?? ''} page${first.pages === 1 ? '' : 's'}.`;
       } else if (tool === 'pdf-split') {
         const buf = await first.file.arrayBuffer();
         const m = mode();

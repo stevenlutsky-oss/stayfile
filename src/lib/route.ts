@@ -87,6 +87,7 @@ export function nextTools(slug: string): Route[] {
     'svg-to-pdf': [{ slug: 'merge-pdf', label: 'Merge with other PDFs' }, { slug: 'rotate-pdf', label: 'Rotate pages' }],
     'bmp-to-pdf': [{ slug: 'merge-pdf', label: 'Merge with other PDFs' }, { slug: 'rotate-pdf', label: 'Rotate pages' }],
     'avif-to-pdf': [{ slug: 'merge-pdf', label: 'Merge with other PDFs' }, { slug: 'rotate-pdf', label: 'Rotate pages' }],
+    'add-page-numbers-to-pdf': [{ slug: 'rotate-pdf', label: 'Rotate pages' }, { slug: 'merge-pdf', label: 'Merge with other PDFs' }],
     'text-to-pdf': [{ slug: 'merge-pdf', label: 'Merge with other PDFs' }],
     'markdown-to-pdf': [{ slug: 'merge-pdf', label: 'Merge with other PDFs' }],
   };

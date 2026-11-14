@@ -1,7 +1,7 @@
 import { describe, test, expect } from 'vitest';
 import { PDFDocument, degrees } from '@cantoo/pdf-lib';
 import { deflateSync } from 'node:zlib';
-import { parseRanges, merge, extract, split, burst, rotate, imagesToPdf, placeImage, pageCount, pagesToKeep, textToPdf } from '../src/lib/pdf';
+import { parseRanges, merge, extract, split, burst, rotate, imagesToPdf, placeImage, pageCount, pagesToKeep, textToPdf, addPageNumbers } from '../src/lib/pdf';
 import { typeValue, parseCsv, csvToJson, csvToMarkdown, tsvToCsv, csvToTsv, markdownTableRows, markdownToCsv, markdownToJson, jsonToCsv, jsonRows, flatten, jsonToMarkdown } from '../src/lib/data';
 import * as XLSX from 'xlsx';
 import { csvToXlsx, xlsxToRows, xlsxToCsv } from '../src/lib/xlsx';
@@ -130,6 +130,16 @@ describe('pdf', () => {
     // Latin-1 passes through; characters outside it come out as question marks, not a crash.
     const odd = await PDFDocument.load(await textToPdf('héllo 中文 wörld'));
     expect(odd.getPageCount()).toBe(1);
+  });
+
+  test('addPageNumbers stamps every page and keeps the document valid', async () => {
+    const base = await textToPdf(Array.from({ length: 30 }, (_, i) => `line ${i + 1}`).join('\n'));
+    const numbered = await addPageNumbers(base, { format: 'of' });
+    const doc = await PDFDocument.load(numbered);
+    expect(doc.getPageCount()).toBe(await pageCount(base));
+    expect(numbered.length).toBeGreaterThan(base.length);
+    const started = await addPageNumbers(base, { format: 'plain', start: 5, position: 'top' });
+    expect((await PDFDocument.load(started)).getPageCount()).toBe(doc.getPageCount());
   });
 });
 

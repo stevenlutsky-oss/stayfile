@@ -90,6 +90,7 @@ export const shapes: Record<string, Shape[]> = {
   'json-to-excel': merge(S(14, 12, 48, 70, 0), { fill: [], cut: ['M28 36q-5 0 -5 5v6q0 3 -3 3q3 0 3 3v6q0 5 5 5', 'M48 36q5 0 5 5v6q0 3 3 3q-3 0 -3 3v6q0 5 -5 5'] }, G(70, 26, 36, 52)),
   'pdf-to-jpg': merge(S(16, 12, 44, 62, 3), P(48, 36, 56, 44)),
   'pdf-to-png': merge(S(16, 12, 44, 62, 3), P(48, 36, 56, 44)),
+  'add-page-numbers-to-pdf': merge(S(34, 12, 52, 72, 0), { fill: [], cut: ['M49 68h22', 'M49 76h14'] }),
   'remove-pages-from-pdf': merge(S(30, 12, 60, 72, 4), { fill: [], cut: [], ink: ['M42 48h36'] }),
   'png-to-pdf': merge(S(46, 10, 50, 72, 3), P(16, 34, 52, 40)),
   'webp-to-pdf': merge(S(46, 10, 50, 72, 3), P(16, 34, 52, 40)),

@@ -73,6 +73,35 @@ export async function burst(b: Bytes): Promise<Uint8Array[]> {
   return split(b, Array.from({ length: n }, (_, i) => [i]));
 }
 
+export type PageNumberFormat = 'plain' | 'count' | 'of';
+
+/** Stamp a number on every page, centred in Courier 10 pt: "3", "3 of 12" or "Page 3 of 12".
+ *  `start` is the number the first page gets; the "of" denominator is that number plus the page count minus one. */
+export async function addPageNumbers(b: Bytes, o: { position?: 'bottom' | 'top'; format?: PageNumberFormat; start?: number } = {}): Promise<Uint8Array> {
+  const position = o.position ?? 'bottom';
+  const format = o.format ?? 'of';
+  const start = Math.max(1, Math.floor(o.start ?? 1));
+  const doc = await load(b);
+  const font = await doc.embedFont(StandardFonts.Courier);
+  const total = doc.getPageCount();
+  const last = start + total - 1;
+  const size = 10;
+  for (const [i, p] of doc.getPages().entries()) {
+    const n = start + i;
+    const label = format === 'plain' ? `${n}` : format === 'count' ? `${n} of ${last}` : `Page ${n} of ${last}`;
+    const { width, height } = p.getSize();
+    const x = Math.max(0, (width - font.widthOfTextAtSize(label, size)) / 2);
+    const y = position === 'bottom' ? 22 : height - 22 - size;
+    try {
+      p.drawText(label, { x, y, size, font });
+    } catch {
+      // WinAnsi covers digits and plain ASCII; swap anything else out rather than fail the whole file.
+      p.drawText(label.replace(/[^\x20-\xFF]/g, '?'), { x, y, size, font });
+    }
+  }
+  return doc.save();
+}
+
 /** Rotate pages clockwise by 90/180/270. `pages` = zero-based indexes, or all pages when omitted. */
 export async function rotate(b: Bytes, by: number, pages?: number[]): Promise<Uint8Array> {
   if (by % 90 !== 0) throw new Error('Rotation must be a multiple of 90 degrees.');

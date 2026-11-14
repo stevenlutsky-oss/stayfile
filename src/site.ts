@@ -12,6 +12,7 @@ export type Tool =
   | 'pdf-to-jpg'
   | 'pdf-to-png'
   | 'pdf-to-text'
+  | 'pdf-numbers'
   | 'text-to-pdf'
   | 'img-to-pdf'
   | 'img-convert'
@@ -207,6 +208,37 @@ export const PAGES: ToolPage[] = [
       {
         q: 'Is the page re-rendered?',
         a: 'No. Only the rotation setting of each page changes. Text stays selectable and image quality is untouched.',
+      },
+      PRIVATE,
+    ],
+  },
+  {
+    slug: 'add-page-numbers-to-pdf',
+    tool: 'pdf-numbers',
+    group: 'PDF',
+    card: 'Add Page Numbers',
+    blurb: 'Stamp a number on every page',
+    title: 'Add page numbers to a PDF online',
+    h1: 'Add page numbers to a PDF',
+    lede: 'Stamp a number on every page of a PDF: plain numbers, "3 of 12", or "Page 3 of 12". The number sits centred at the bottom or the top, and the file keeps everything it had.',
+    description: 'Add page numbers to a PDF in your browser. Every page is numbered, the text stays selectable and the file is never uploaded.',
+    steps: [
+      'Drop in the PDF.',
+      'Pick where the number goes, the format, and the number to start at.',
+      'Click Add page numbers and save the PDF.',
+    ],
+    faq: [
+      {
+        q: 'Can I start at a page number other than 1?',
+        a: 'Yes. Set "Start at" and the first page of this file gets that number. The "of" part then counts to that number plus the page count minus one, so "Page 5 of 20" works for a file that is pages 5 to 20 of something longer.',
+      },
+      {
+        q: 'Does this change the pages themselves?',
+        a: 'No. A number is drawn onto each page and nothing else is touched. Text stays selectable and images keep their quality.',
+      },
+      {
+        q: 'Where exactly does the number sit?',
+        a: 'Centred, near the bottom or near the top of the page, in Courier 10 pt. Pick bottom for reports and top for legal filings or letterheads.',
       },
       PRIVATE,
     ],

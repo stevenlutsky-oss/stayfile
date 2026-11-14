@@ -192,6 +192,7 @@ const checks = [
   { slug: '/text-to-pdf/', fixtures: [F('sample.txt')], click: 'Make PDF', expect: 'Made' },
   { slug: '/yaml-to-json/', fixtures: [F('sample.yaml')], click: 'Download .json', expect: '' },
   { slug: '/json-to-yaml/', fixtures: [F('sample.json')], click: 'Download .yaml', expect: '' },
+  { slug: '/add-page-numbers-to-pdf/', fixtures: [F('sample.pdf')], click: 'Add page numbers', expect: 'Added' },
   { slug: '/heic-to-jpg/', name: 'heic-to-jpg (load only, no HEIC fixture)' },
   { slug: '/heic-to-png/', name: 'heic-to-png (load only, no HEIC fixture)' },
 ].filter((c) => !c.skip);
