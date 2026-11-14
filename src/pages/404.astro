@@ -1,0 +1,28 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../site';
+---
+<Base title={`Page not found | ${SITE.name}`} description="The page you looked for does not exist. The PDF, image and data tools all live on the home page." path="/404/">
+  <div class="board bleed" data-family="any">
+    <div class="wall">
+      <h1>Nothing lives at this address</h1>
+      <p class="lede">The link may be old, or the page may have moved. Every tool on this site is one click from the home page.</p>
+      <div class="actions">
+        <a class="primary btn" href="/">Go to the tools</a>
+      </div>
+      <ul class="aim">
+        <li><a href="/#pdf">PDF tools</a></li>
+        <li><a href="/#images">Image tools</a></li>
+        <li><a href="/#data">Spreadsheet and data tools</a></li>
+      </ul>
+    </div>
+  </div>
+</Base>
+<style>
+  .wall { padding: 48px 0 64px; }
+  h1 { margin-top: 12px; }
+  .btn { display: inline-flex; align-items: center; text-decoration: none; }
+  .aim { list-style: none; margin: 28px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 24px; }
+  .aim a { color: var(--paint); font-weight: 600; }
+  .aim a:hover { color: #ffffff; }
+</style>
