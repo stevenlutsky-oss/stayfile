@@ -226,7 +226,9 @@ const outLabel = { 'yaml-to-json': 'Download .json', 'json-to-yaml': 'Download .
   drop.addEventListener('files', async (e) => {
     const all = (e as CustomEvent<File[]>).detail;
     const f = all[0];
-    const looksData = /^text\//.test(f.type) || f.type === '' || f.type === 'application/json' || f.type === 'application/yaml' || f.type === 'application/x-yaml' || f.type === 'application/vnd.ms-excel' || /\.(csv|tsv|txt|json|jsonl|ndjson|yaml|yml)$/i.test(f.name);
+    // YAML tool pages take any text-like file (JSON is valid YAML); on every other data page a .yaml file is refused up front.
+    const looksYaml = /^(text\/|application\/(json|yaml|x-yaml))/.test(f.type) || f.type === '' || /\.(yaml|yml|json|txt)$/i.test(f.name);
+    const looksData = fromYaml ? looksYaml : /^text\//.test(f.type) || f.type === '' || f.type === 'application/json' || f.type === 'application/vnd.ms-excel' || /\.(csv|tsv|txt|json|jsonl|ndjson)$/i.test(f.name);
     if (!fromXlsx && !fromMd && !looksData) {
       list.innerHTML = '';
       err.textContent = `${f.name} does not look like ${fromYaml ? (tool === 'yaml-to-json' ? 'a YAML or JSON' : 'a JSON') : fromJson ? 'a JSON' : fromTsv ? 'a TSV' : fromMd ? 'a Markdown' : 'a CSV'} file.`;
