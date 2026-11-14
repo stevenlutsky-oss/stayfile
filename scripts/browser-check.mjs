@@ -62,6 +62,7 @@ await writeFile(join(fixtures, 'sample.xlsx'), XLSX.write(wb, { type: 'buffer', 
 
 await writeFile(join(fixtures, 'sample.csv'), 'name,zip\nAda,02134\nBob,07030\n');
 await writeFile(join(fixtures, 'sample.json'), JSON.stringify([{ name: 'Ada', zip: '02134' }, { name: 'Bob', zip: '07030' }]));
+await writeFile(join(fixtures, 'sample.yaml'), 'name: Ada\nzip: \'02134\'\n---\nname: Bob\nzip: \'07030\'\n');
 // 1x1 transparent GIF
 await writeFile(join(fixtures, 'sample.gif'), Buffer.from('R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', 'base64'));
 
@@ -189,6 +190,8 @@ const checks = [
   { slug: '/svg-to-pdf/', name: 'svg-to-pdf (load only, no SVG fixture)' },
   { slug: '/pdf-to-text/', fixtures: [F('sample.pdf')], click: 'Extract text', expect: 'Extracted' },
   { slug: '/text-to-pdf/', fixtures: [F('sample.txt')], click: 'Make PDF', expect: 'Made' },
+  { slug: '/yaml-to-json/', fixtures: [F('sample.yaml')], click: 'Download .json', expect: '' },
+  { slug: '/json-to-yaml/', fixtures: [F('sample.json')], click: 'Download .yaml', expect: '' },
   { slug: '/heic-to-jpg/', name: 'heic-to-jpg (load only, no HEIC fixture)' },
   { slug: '/heic-to-png/', name: 'heic-to-png (load only, no HEIC fixture)' },
 ].filter((c) => !c.skip);
