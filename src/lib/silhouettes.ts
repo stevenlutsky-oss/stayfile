@@ -78,6 +78,7 @@ export const shapes: Record<string, Shape[]> = {
   'jsonl-to-csv': merge(S(14, 12, 48, 70, 0), { fill: [], cut: ['M28 36q-5 0 -5 5v6q0 3 -3 3q3 0 3 3v6q0 5 5 5', 'M48 36q5 0 5 5v6q0 3 3 3q-3 0 -3 3v6q0 5 -5 5'] }, G(70, 26, 36, 52)),
   'json-to-csv': merge(S(14, 12, 48, 70, 0), { fill: [], cut: ['M28 36q-5 0 -5 5v6q0 3 -3 3q3 0 3 3v6q0 5 5 5', 'M48 36q5 0 5 5v6q0 3 3 3q-3 0 -3 3v6q0 5 -5 5'] }, G(70, 26, 36, 52)),
   'csv-to-excel': merge(G(14, 14, 60, 70, true), S(70, 34, 36, 50, 3)),
+  'tsv-to-excel': merge(G(14, 14, 60, 70, true), S(70, 34, 36, 50, 3)),
   'excel-to-csv': merge(S(62, 30, 44, 56, 3), G(12, 14, 56, 68, true)),
   'excel-to-json': merge(G(12, 14, 54, 68, true), { fill: ['M88 32q-6 0 -6 6v7q0 4 -4 4q4 0 4 4v7q0 6 6 6', 'M100 32q6 0 6 6v7q0 4 4 4q-4 0 -4 4v7q0 6 -6 6'], cut: [] }),
   'excel-to-markdown': merge(G(12, 14, 54, 68, true), { fill: [], cut: [], ink: ['M28 36h22', 'M28 48h34', 'M28 60h26'] }),

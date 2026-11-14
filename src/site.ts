@@ -1701,6 +1701,38 @@ export const PAGES: ToolPage[] = [
     ],
   },
   {
+    slug: 'tsv-to-excel',
+    tool: 'csv-to-xlsx',
+    group: 'Spreadsheets and data',
+    card: 'TSV to Excel',
+    blurb: 'Tab-separated rows into an .xlsx workbook',
+    preset: { accept: '.tsv,text/tab-separated-values,text/plain' },
+    title: 'TSV to Excel converter online',
+    h1: 'Convert TSV to Excel',
+    lede: 'Turn a tab-separated file into a real Excel workbook. This is the format you get from many database exports and from copying cells out of a spreadsheet. Numbers become numbers, and the first row becomes the header.',
+    description: 'Convert TSV to Excel in your browser. Drop a .tsv file or paste the rows, and download an .xlsx workbook. Nothing is uploaded.',
+    steps: [
+      'Drop in a .tsv file, or paste cells copied from a spreadsheet.',
+      'Check the options: whether the first row is column names, and whether numbers should stay as text.',
+      'Click Download .xlsx to save the workbook.',
+    ],
+    faq: [
+      {
+        q: 'How do I open the result?',
+        a: 'Double-click it. Excel, Google Sheets and LibreOffice all read .xlsx. The numbers arrive as numbers and the first row as the header, so you can filter and sum right away.',
+      },
+      {
+        q: 'Why not just save the file as .csv?',
+        a: 'A CSV with tabs inside the cells opens badly in Excel, and a comma-separated copy needs the tabs replaced first. This page writes a proper .xlsx, so there is no delimiter to fight with.',
+      },
+      {
+        q: 'Will zip codes and IDs keep their leading zeros?',
+        a: 'Yes. Values that start with a zero are written as text, so a zip code like 02134 stays 02134. If everything must stay text, tick "Keep all values as text".',
+      },
+      PRIVATE,
+    ],
+  },
+  {
     slug: 'jsonl-to-csv',
     tool: 'json-to-csv',
     group: 'Spreadsheets and data',
