@@ -369,7 +369,7 @@ const action = { 'pdf-merge': 'Merge PDFs', 'pdf-split': split === 'extract' ? '
           slug: root.dataset.slug!,
           line: `${done}${secs >= 0.5 ? ` Took ${secs.toFixed(1)} s.` : ''} ${savedLine(got.name, got.count)}`,
           again: () => save(got.data, got.name, got.type),
-          result: got.count === 1 && got.type === pdf ? new File([got.data as BlobPart], got.name, { type: pdf }) : undefined
+          result: got.count === 1 ? new File([got.data as BlobPart], got.name, { type: got.type }) : undefined
         });
       }
     } catch (e) {

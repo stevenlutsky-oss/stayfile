@@ -112,8 +112,7 @@ export function nextTools(slug: string): Route[] {
     { slug: 'resize-image', label: 'Resize' },
     { slug: 'jpg-to-pdf', label: 'Turn into a PDF' },
   ];
-  // Every page that saves an image, so the next step is one click after an image tool.
-  // A hand-kept list: the three multi-format tools plus every img-convert preset page.
+  // A single-page PDF to JPG or PNG saves one image, so the same image next steps apply.
   const IMAGE_OUTPUT = new Set([
     'convert-image', 'compress-image', 'resize-image', 'compress-jpg', 'compress-png', 'resize-jpg', 'resize-png',
     'png-to-jpg', 'jpg-to-png', 'webp-to-jpg', 'heic-to-jpg', 'heic-to-png', 'heic-to-webp',
@@ -121,6 +120,9 @@ export function nextTools(slug: string): Route[] {
     'gif-to-png', 'gif-to-jpg', 'webp-to-png', 'png-to-webp', 'jpg-to-webp', 'gif-to-webp',
     'ico-to-png', 'bmp-to-jpg', 'bmp-to-png', 'ico-to-jpg', 'ico-to-webp',
   ]);
+  if (slug === 'pdf-to-jpg' || slug === 'pdf-to-png') {
+    return [{ slug: 'compress-image', label: 'Make it smaller' }, { slug: 'resize-image', label: 'Resize' }];
+  }
   if (IMAGE_OUTPUT.has(slug)) {
     return imgNext.filter((r) => r.slug !== slug);
   }
