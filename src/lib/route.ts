@@ -87,6 +87,8 @@ export function nextTools(slug: string): Route[] {
     'svg-to-pdf': [{ slug: 'merge-pdf', label: 'Merge with other PDFs' }, { slug: 'rotate-pdf', label: 'Rotate pages' }],
     'bmp-to-pdf': [{ slug: 'merge-pdf', label: 'Merge with other PDFs' }, { slug: 'rotate-pdf', label: 'Rotate pages' }],
     'avif-to-pdf': [{ slug: 'merge-pdf', label: 'Merge with other PDFs' }, { slug: 'rotate-pdf', label: 'Rotate pages' }],
+    'text-to-pdf': [{ slug: 'merge-pdf', label: 'Merge with other PDFs' }],
+    'markdown-to-pdf': [{ slug: 'merge-pdf', label: 'Merge with other PDFs' }],
   };
   if (pdfNext[slug]) return pdfNext[slug];
   // After a data tool saves a file, offer the next step in the data chain. One click carries the file over.

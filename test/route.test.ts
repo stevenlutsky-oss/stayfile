@@ -85,6 +85,8 @@ describe('nextTools', () => {
     expect(slugs(nextTools('jsonl-to-csv'))).toEqual(['csv-to-excel']);
     expect(slugs(nextTools('pdf-to-jpg'))).toEqual(['compress-image', 'resize-image']);
     expect(slugs(nextTools('pdf-to-png'))).toEqual(['compress-image', 'resize-image']);
+    expect(slugs(nextTools('text-to-pdf'))).toEqual(['merge-pdf']);
+    expect(slugs(nextTools('markdown-to-pdf'))).toEqual(['merge-pdf']);
   });
   test('every slug offered anywhere is a real page', () => {
     const real = new Set(PAGES.map((p) => p.slug));
