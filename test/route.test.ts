@@ -17,6 +17,8 @@ describe('kindOf', () => {
     expect(kindOf(f('rows.ndjson'))).toBe('json');
     expect(kindOf(f('notes.txt'))).toBe('text');
     expect(kindOf(f('notes', 'text/plain'))).toBe('text');
+    expect(kindOf(f('config.yaml'))).toBe('yaml');
+    expect(kindOf(f('config.yml', 'application/x-yaml'))).toBe('yaml');
     expect(kindOf(f('README.md'))).toBe('text');
     expect(kindOf(f('notes.docx'))).toBe('other');
   });
@@ -45,6 +47,10 @@ describe('suggestTools', () => {
   test('one Excel file maps to the Excel converters', () => {
     expect(slugs(suggestTools([f('budget.xlsx')]))).toEqual(['excel-to-csv', 'excel-to-json']);
     expect(kindOf(f('budget.xlsx'))).toBe('xlsx');
+  });
+  test('one YAML file suggests the YAML to JSON page', () => {
+    expect(slugs(suggestTools([f('config.yaml')]))).toEqual(['yaml-to-json']);
+    expect(describeDrop([f('config.yaml')])).toBe('config.yaml. What should happen to it?');
   });
   test('one text file suggests text-to-pdf', () => {
     expect(slugs(suggestTools([f('notes.txt')]))).toEqual(['text-to-pdf']);

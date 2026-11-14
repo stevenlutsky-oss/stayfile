@@ -32,7 +32,9 @@ export type Tool =
   | 'csv-to-tsv'
   | 'md-to-csv'
   | 'md-to-json'
-  | 'md-to-xlsx';
+  | 'md-to-xlsx'
+  | 'yaml-to-json'
+  | 'json-to-yaml';
 
 export type Group = 'PDF' | 'Images' | 'Spreadsheets and data';
 
@@ -2066,6 +2068,68 @@ export const PAGES: ToolPage[] = [
       {
         q: 'Will the table render on GitHub?',
         a: 'Yes. The output is a GitHub-flavored Markdown table, and columns that hold only numbers are right-aligned. Paste it into a README, an issue or a pull request.',
+      },
+      PRIVATE,
+    ],
+  },
+  {
+    slug: 'yaml-to-json',
+    tool: 'yaml-to-json',
+    group: 'Spreadsheets and data',
+    card: 'YAML to JSON',
+    blurb: 'Turn YAML config files into JSON',
+    title: 'YAML to JSON converter online',
+    h1: 'Convert YAML to JSON',
+    lede: 'Turn a YAML file into JSON. Handy for CI configs, Kubernetes manifests and app settings you need as JSON for a script or an API. Everything runs in your browser.',
+    description: 'Convert YAML to JSON in your browser, including multi-document files. Your file is never uploaded.',
+    steps: [
+      'Drop in a .yaml or .yml file, or paste the YAML.',
+      'Check the preview of the parsed rows.',
+      'Download the .json file or copy it.',
+    ],
+    faq: [
+      {
+        q: 'Does it handle multi-document YAML?',
+        a: 'Yes. A file with several documents separated by --- becomes a JSON array with one entry per document.',
+      },
+      {
+        q: 'Is YAML actually a superset of JSON?',
+        a: 'Mostly. Plain JSON parses as YAML, so a .json file converts fine here as well. YAML-specific features like anchors and aliases are resolved by the parser before the JSON is written.',
+      },
+      {
+        q: 'What YAML does it support?',
+        a: 'The YAML 1.2 core schema: maps, lists, strings, numbers, booleans and null. Timestamps are kept as strings, so nothing is guessed.',
+      },
+      PRIVATE,
+    ],
+  },
+  {
+    slug: 'json-to-yaml',
+    tool: 'json-to-yaml',
+    group: 'Spreadsheets and data',
+    card: 'JSON to YAML',
+    blurb: 'Turn JSON into YAML config',
+    title: 'JSON to YAML converter online',
+    h1: 'Convert JSON to YAML',
+    lede: 'Turn a JSON file into YAML, the format CI systems and app manifests use. Nesting, lists and quoted strings all come out as clean block YAML. Everything runs in your browser.',
+    description: 'Convert JSON to YAML in your browser. Keys keep their order from the JSON file, and nothing is uploaded.',
+    steps: [
+      'Drop in a .json file, or paste the JSON.',
+      'Check the preview of the parsed rows.',
+      'Download the .yaml file or copy it.',
+    ],
+    faq: [
+      {
+        q: 'Does the key order survive?',
+        a: 'Yes. js-yaml keeps the order the keys have in your JSON file. Reordering for alphabetical keys is not done, which is usually what you want for config files.',
+      },
+      {
+        q: 'What about big or deeply nested JSON?',
+        a: 'The parser handles nesting fine. The limit is your memory, the same as every other page here. If you need YAML anchors for repeated blocks, write those by hand; the page does not generate them.',
+      },
+      {
+        q: 'What YAML does it write?',
+        a: 'Block-style YAML 1.2 with two-space indentation. Strings that need quoting are quoted; everything else comes out plain.',
       },
       PRIVATE,
     ],
