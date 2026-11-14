@@ -2130,7 +2130,7 @@ export const PAGES: ToolPage[] = [
       },
       {
         q: 'What YAML does it support?',
-        a: 'The YAML 1.2 core schema: maps, lists, strings, numbers, booleans and null. Timestamps are kept as strings, so nothing is guessed.',
+        a: 'Maps, lists, strings, numbers, booleans and null, with anchors and aliases resolved before the JSON is written. Tags with custom meaning are not supported, and keys keep their order from the file.',
       },
       PRIVATE,
     ],
