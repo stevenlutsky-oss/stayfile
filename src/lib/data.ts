@@ -167,6 +167,12 @@ export function markdownToCsv(text: string): string {
   return Papa.unparse(markdownTableRows(text), { delimiter: ',', newline: '\r\n' });
 }
 
+/** Markdown table → JSON rows. The header row becomes the keys, cells are typed like CSV cells
+ *  (numbers become numbers, leading zeros stay text). Everything before the table is dropped. */
+export function markdownToJson(text: string, o: { indent?: number } = {}): string {
+  return csvToJson(markdownToCsv(text), { delimiter: ',', header: true, typed: true, indent: o.indent ?? 2 });
+}
+
 export function jsonRows(text: string): Row[] {
   const t = text.replace(/^﻿/, '').trim();
   if (!t) throw new Error('The file is empty.');

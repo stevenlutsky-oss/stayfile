@@ -31,6 +31,7 @@ export type Tool =
   | 'tsv-to-csv'
   | 'csv-to-tsv'
   | 'md-to-csv'
+  | 'md-to-json'
   | 'md-to-xlsx';
 
 export type Group = 'PDF' | 'Images' | 'Spreadsheets and data';
@@ -1791,6 +1792,37 @@ export const PAGES: ToolPage[] = [
       {
         q: 'Is the header row kept?',
         a: 'Yes. The first row of the table stays as the first line of the CSV, and the alignment row (| --- | --- |) is dropped.',
+      },
+      PRIVATE,
+    ],
+  },
+  {
+    slug: 'markdown-to-json',
+    tool: 'md-to-json',
+    group: 'Spreadsheets and data',
+    card: 'Markdown to JSON',
+    blurb: 'A Markdown table into JSON rows',
+    title: 'Markdown to JSON converter online',
+    h1: 'Convert Markdown to JSON',
+    lede: 'Turn a Markdown table into JSON rows you can feed to a script or an API call. The first table in the file is read, prose around it is ignored, and the header row becomes the keys.',
+    description: 'Convert a Markdown table to JSON in your browser. The first GitHub-flavored table is used, the header row becomes the keys, and nothing is uploaded.',
+    steps: [
+      'Drop in a .md file, or paste the Markdown.',
+      'Check the preview of the table.',
+      'Download the .json file or copy it.',
+    ],
+    faq: [
+      {
+        q: 'Which table is converted?',
+        a: 'The first table in the file. Other Markdown around it, headings, paragraphs and code blocks, is skipped. If the file holds no table, you get an error that says so.',
+      },
+      {
+        q: 'Are numbers kept as numbers?',
+        a: 'Yes. Plain numbers come out as JSON numbers and true and false as booleans, so the rows are ready to use. Values with leading zeros, such as zip codes, stay text.',
+      },
+      {
+        q: 'What do escaped pipes and line breaks in cells become?',
+        a: '\\| becomes | again, and <br> becomes a line break inside the string, the reverse of what the CSV to Markdown page does.',
       },
       PRIVATE,
     ],

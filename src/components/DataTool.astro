@@ -7,7 +7,7 @@ const fromJson = tool === 'json-to-csv' || tool === 'json-to-xlsx' || tool === '
 const fromXlsx = tool === 'xlsx-to-csv' || tool === 'xlsx-to-json' || tool === 'xlsx-to-markdown' || tool === 'xlsx-to-tsv';
 const fromTsv = tool === 'tsv-to-csv';
 const fromCsvTsv = tool === 'csv-to-tsv';
-const fromMd = tool === 'md-to-csv' || tool === 'md-to-xlsx';
+const fromMd = tool === 'md-to-csv' || tool === 'md-to-json' || tool === 'md-to-xlsx';
 const pExts = (preset?.accept ?? '').match(/\.[a-z0-9]+/gi)?.map((e) => e.slice(1).toUpperCase()) ?? [];
 const presetLabel = pExts.join(' · ');
 const isTsv = pExts.includes('TSV');
@@ -25,7 +25,7 @@ const placeholder = fromMd
       ? '{"name": "Ada", "age": 36}\n{"name": "Grace", "age": 85}'
       : fromJson ? '[{"name": "Ada", "age": 36}, {"name": "Grace", "age": 85}]' : 'name,age\nAda,36\nGrace,85';
 const sub = presetLabel ? `${presetLabel} files, or paste below` : fromXlsx ? 'Only the first sheet is converted' : fromMd ? 'A Markdown table, or paste below' : fromTsv ? 'TSV files, or paste below' : fromCsvTsv ? 'CSV files, or paste below' : 'or paste below';
-const outLabel = { 'csv-to-json': 'Download .json', 'json-to-csv': 'Download .csv', 'csv-to-xlsx': 'Download .xlsx', 'xlsx-to-csv': 'Download .csv', 'xlsx-to-json': 'Download .json', 'xlsx-to-markdown': 'Download .md', 'json-to-markdown': 'Download .md', 'json-to-xlsx': 'Download .xlsx', 'csv-to-markdown': 'Download .md', 'tsv-to-csv': 'Download .csv', 'csv-to-tsv': 'Download .tsv', 'xlsx-to-tsv': 'Download .tsv', 'md-to-csv': 'Download .csv', 'md-to-xlsx': 'Download .xlsx' }[tool as string];
+const outLabel = { 'csv-to-json': 'Download .json', 'json-to-csv': 'Download .csv', 'csv-to-xlsx': 'Download .xlsx', 'xlsx-to-csv': 'Download .csv', 'xlsx-to-json': 'Download .json', 'xlsx-to-markdown': 'Download .md', 'json-to-markdown': 'Download .md', 'json-to-xlsx': 'Download .xlsx', 'csv-to-markdown': 'Download .md', 'tsv-to-csv': 'Download .csv', 'csv-to-tsv': 'Download .tsv', 'xlsx-to-tsv': 'Download .tsv', 'md-to-csv': 'Download .csv', 'md-to-json': 'Download .json', 'md-to-xlsx': 'Download .xlsx' }[tool as string];
 ---
 <section class="tool" data-tool={tool} data-slug={slug}>
   <Drop accept={accept} main={`Drop ${what} here, or <u>choose one</u>`} sub={sub} />
@@ -72,11 +72,11 @@ const outLabel = { 'csv-to-json': 'Download .json', 'json-to-csv': 'Download .cs
   <p class="error" id="err" role="alert" hidden></p>
 
   <div class="preview" id="tableWrap" hidden><table><thead id="thead"></thead><tbody id="tbody"></tbody></table></div>
-  {(tool === 'csv-to-json' || tool === 'xlsx-to-json' || tool === 'csv-to-markdown' || tool === 'xlsx-to-markdown' || tool === 'xlsx-to-tsv' || tool === 'json-to-markdown') && <textarea id="output" rows="12" readonly spellcheck="false" aria-label="Output" hidden style="margin-top:14px"></textarea>}
+  {(tool === 'csv-to-json' || tool === 'xlsx-to-json' || tool === 'csv-to-markdown' || tool === 'xlsx-to-markdown' || tool === 'xlsx-to-tsv' || tool === 'json-to-markdown' || tool === 'md-to-json') && <textarea id="output" rows="12" readonly spellcheck="false" aria-label="Output" hidden style="margin-top:14px"></textarea>}
 </section>
 
 <script>
-  import { parseCsv, csvToJson, csvToMarkdown, tsvToCsv, csvToTsv, markdownToCsv, markdownTableRows, jsonRows, columns, jsonToCsv, jsonToMarkdown, type CsvOptions } from '../lib/data';
+  import { parseCsv, csvToJson, csvToMarkdown, tsvToCsv, csvToTsv, markdownToCsv, markdownToJson, markdownTableRows, jsonRows, columns, jsonToCsv, jsonToMarkdown, type CsvOptions } from '../lib/data';
   import { save, baseName } from '../lib/save';
   import { savedLine } from '../lib/route';
   import { showDone, hideDone } from '../lib/done';
@@ -86,7 +86,7 @@ const outLabel = { 'csv-to-json': 'Download .json', 'json-to-csv': 'Download .cs
   const fromXlsx = tool === 'xlsx-to-csv' || tool === 'xlsx-to-json' || tool === 'xlsx-to-markdown' || tool === 'xlsx-to-tsv';
   const fromTsv = tool === 'tsv-to-csv';
   const fromCsvTsv = tool === 'csv-to-tsv';
-  const fromMd = tool === 'md-to-csv' || tool === 'md-to-xlsx';
+  const fromMd = tool === 'md-to-csv' || tool === 'md-to-json' || tool === 'md-to-xlsx';
   const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T | null;
   const input = $<HTMLTextAreaElement>('input')!, drop = $('drop')!, go = $<HTMLButtonElement>('go')!, copy = $<HTMLButtonElement>('copy');
   const status = $('status')!, err = $('err')!, list = $('list')!, out = $<HTMLTextAreaElement>('output');
@@ -151,9 +151,11 @@ const outLabel = { 'csv-to-json': 'Download .json', 'json-to-csv': 'Download .cs
         // The first Markdown table in the text becomes rows; the first row is the header.
         const rows = markdownTableRows(text);
         const cols = rows.reduce((m, r) => Math.max(m, r.length), 0);
-        result = markdownToCsv(text);
+        const toJson = tool === 'md-to-json';
+        result = toJson ? markdownToJson(text) : markdownToCsv(text);
+        if (toJson) { out!.value = result.length > 200_000 ? result.slice(0, 200_000) + '\n… (preview cut short; the download has everything)' : result; out!.hidden = false; }
         table(rows[0] ?? [], rows.slice(1));
-        status.textContent = `${rows.length - 1} row${rows.length - 1 === 1 ? '' : 's'}, ${cols} column${cols === 1 ? '' : 's'}, first row used as the header.${rows.length - 1 > MAX_ROWS ? ` Preview shows the first ${MAX_ROWS}.` : ''}`;
+        status.textContent = `${rows.length - 1} row${rows.length - 1 === 1 ? '' : 's'}, ${cols} column${cols === 1 ? '' : 's'}, first row used as the header${toJson ? ', typed as numbers where possible' : ''}.${rows.length - 1 > MAX_ROWS ? ` Preview shows the first ${MAX_ROWS}.` : ''}`;
       } else if (fromXlsx) {
         // The text is the first sheet already converted to CSV. CSV downloads are the text itself; JSON is built from it.
         const rows = parseCsv(text, { delimiter: ',', header: false, typed: false }).rows as unknown[][];
@@ -273,7 +275,7 @@ const outLabel = { 'csv-to-json': 'Download .json', 'json-to-csv': 'Download .cs
     });
   };
   go.addEventListener('click', async () => {
-    if (tool === 'csv-to-json' || tool === 'xlsx-to-json') done(new Blob([result], { type: 'application/json' }), `${name}.json`);
+    if (tool === 'csv-to-json' || tool === 'xlsx-to-json' || tool === 'md-to-json') done(new Blob([result], { type: 'application/json' }), `${name}.json`);
     else if (fromCsvTsv || tool === 'xlsx-to-tsv') done(new Blob(['﻿' + result], { type: 'text/tab-separated-values' }), `${name}.tsv`); // BOM so Excel reads UTF-8
     else if (tool === 'csv-to-markdown' || tool === 'xlsx-to-markdown' || tool === 'json-to-markdown') done(new Blob([result], { type: 'text/markdown' }), `${name}.md`);
     else if (tool === 'json-to-csv' || fromXlsx || fromTsv || tool === 'md-to-csv') done(new Blob(['﻿' + result], { type: 'text/csv' }), `${name}.csv`); // BOM so Excel reads UTF-8

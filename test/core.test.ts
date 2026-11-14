@@ -2,7 +2,7 @@ import { describe, test, expect } from 'vitest';
 import { PDFDocument, degrees } from '@cantoo/pdf-lib';
 import { deflateSync } from 'node:zlib';
 import { parseRanges, merge, extract, split, burst, rotate, imagesToPdf, placeImage, pageCount, pagesToKeep, textToPdf } from '../src/lib/pdf';
-import { typeValue, parseCsv, csvToJson, csvToMarkdown, tsvToCsv, csvToTsv, markdownTableRows, markdownToCsv, jsonToCsv, jsonRows, flatten, jsonToMarkdown } from '../src/lib/data';
+import { typeValue, parseCsv, csvToJson, csvToMarkdown, tsvToCsv, csvToTsv, markdownTableRows, markdownToCsv, markdownToJson, jsonToCsv, jsonRows, flatten, jsonToMarkdown } from '../src/lib/data';
 import * as XLSX from 'xlsx';
 import { csvToXlsx, xlsxToRows, xlsxToCsv } from '../src/lib/xlsx';
 import { targetSize, renameTo, formatBytes, sizeChange, avifQuality } from '../src/lib/image';
@@ -243,6 +243,16 @@ describe('csv and json', () => {
   test('markdownTableRows unescapes pipes and <br> cells', () => {
     expect(markdownToCsv('| a | b |\n| --- | --- |\n| x\\|y | l1<br>l2 |')).toBe('a,b\r\nx|y,"l1\nl2"');
     expect(markdownToCsv('| a | b |\n| --- | --- |\n| 1,000 | plain |')).toBe('a,b\r\n"1,000",plain');
+  });
+
+  test('markdownToJson types plain numbers and keeps leading zeros as text', () => {
+    expect(JSON.parse(markdownToJson('| name | age | zip |\n| --- | --- | --- |\n| Ada | 36 | 02134 |'))).toEqual([
+      { name: 'Ada', age: 36, zip: '02134' },
+    ]);
+  });
+
+  test('markdownToJson throws when the text holds no table', () => {
+    expect(() => markdownToJson('no pipes here')).toThrow('No Markdown table');
   });
 
   test('round trip CSV → JSON → CSV', () => {
