@@ -11,7 +11,7 @@ interface Props {
 const { accept, multiple = false, main, sub, take = true } = Astro.props;
 ---
 <label class="drop" id="drop" data-accept={accept} data-take={take ? '' : undefined}>
-  <input type="file" id="file" accept={accept} multiple={multiple} hidden />
+  <input type="file" id="file" class="sr" accept={accept} multiple={multiple} aria-label="Choose a file" />
   <span class="drop-main" set:html={main} />
   <span class="drop-sub">{sub}</span>
 </label>
