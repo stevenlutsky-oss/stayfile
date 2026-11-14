@@ -253,6 +253,7 @@ const canonical = new URL(path, SITE.url).href;
   summary::after { content: ''; flex: none; width: 8px; height: 8px; border-right: 2px solid var(--ink); border-bottom: 2px solid var(--ink); transform: translateY(-2px) rotate(45deg); transition: transform .14s cubic-bezier(.2, 0, .2, 1); }
   details[open] summary::after { transform: translateY(2px) rotate(-135deg); }
   summary:hover { color: var(--link); }
+  summary:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 2px; }
   details p { color: var(--muted); margin: 0; padding: 0 16px 20px 0; max-width: 64ch; }
 
   footer { margin-top: 64px; background: var(--tray); color: var(--muted); font-size: 14px; }
